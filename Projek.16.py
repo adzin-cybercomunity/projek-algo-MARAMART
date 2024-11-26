@@ -367,3 +367,4 @@ def lihat_stok():
 
 if __name__ == "__main__":
     menu_regislogin()
+    # tes
