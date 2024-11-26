@@ -288,22 +288,24 @@ def menu_admin():
 
 #admin pake _       
 def cek_stok():
-    os.system('cls')
-    print("===Kamu Mau Apa Admint===")
-    print("1. Re-Stock")
-    print("2. Lihat Stock")
-    print("3. Hapus Stock")
-    print("4. Kembali")
-    pilihan = input("Pilih Menu [1/2/3/4] :")
-    if pilihan == "1" :
-        restok()
-    if pilihan == "2" :
-        lihat_stok ()
-    if pilihan == "3" :
-        hapusdata()
-    if pilihan == "4" :
-        menu_admin()
-
+    while True:
+        os.system('cls')
+        print("===Kamu Mau Apa Admint===")
+        print("1. Re-Stock")
+        print("2. Lihat Stock")
+        print("3. Hapus Stock")
+        print("4. Kembali")
+        pilihan = input("Pilih Menu [1/2/3/4] :")
+        if pilihan == "1" :
+            restok()
+        elif pilihan == "2" :
+            lihat_stok ()
+        elif pilihan == "3" :
+            hapus_stok()
+        elif pilihan == "4" :
+            menu_admin()
+        else:
+            print("input tidak valid")
 
 def tampilkanstoknya():
     datastok = pd.read_csv('datastok.csv')      
@@ -331,22 +333,63 @@ def menu_customer():
     if pilihan == "3":
         exit()
 
+
+def hapus_stok():
+    stok = pd.read_csv('datastok.csv')
+    nama_barang = input("Masukkan nama Barang yang mau dihapus")
+    if nama_barang in stok['nama'].values:
+        stok = stok[stok['nama'] != nama_barang]
+        stok.to_csv('datastok.csv', index=False)
+        print('Nama Barang berhasil dihapus')
+    else:
+        print("Nama Barang tidak ditemukan")
+
 def cekstok():
-    os.system('cls')
-    print("===Halo Pelanggan===")
-    print("1. Lihat Stock")
-    print("2. Beli Barang")
-    print("3. Hapus Barang")
-    print("4. Kembali")
-    pilihan = input("Pilih Menu [1/2/3/4] :")
-    if pilihan == "1" :
-        lihat_stok()
-    if pilihan == "2" :
-        lihat_stok ()
-    if pilihan == "3" :
-        hapusdata()
-    if pilihan == "4" :
-        menu_admin()
+    while True:
+        os.system('cls')
+        print("===Halo Pelanggan===")
+        print("1. Lihat Stock")
+        print("2. Beli Barang")
+        print("3. Hapus Barang")
+        print("4. Kembali")
+        pilihan = input("Pilih Menu [1/2/3/4] :")
+        if pilihan == "1" :
+            lihat_stok()
+        if pilihan == "2" :
+            beli_barang()
+        if pilihan == "3" :
+            hapus_barang()
+        if pilihan == "4" :
+            menu_admin()
+
+
+def restok():
+    while True:
+        print('DATA STOK')
+        try:
+            stok = pd.read_csv('datastok.csv')
+            print(stok)
+        except FileNotFoundError:
+            print("File 'datastok.csv' Tidak Ditemukan. Membuat File Baru")
+
+        nama = input("Masukkan nama barang: ")
+        jenisbarang = input("Masukkan jenis barang: ")
+        harga = int(input("Masukkan harga barang: "))
+        stok = input("Masukkan stok: ")
+        expire = input("Masukkan tanggal kadaluarsa barang (yyyy-mm-dd): ")
+
+        stok = pd.DataFrame({
+            'nama' : [nama],
+            'jenisbarang' : [jenisbarang],
+            "harga": [harga],
+            "stok" : [stok],
+            "expire" : [expire]})
+
+        stok.to_csv('datastok.csv', mode='a',header=False,index=False)
+        print("Data barang Berhasil Ditambahkan")
+        return
+
+
 
 def lihat_stok():
     os.system('cls')
@@ -354,17 +397,18 @@ def lihat_stok():
     os.system('cls')
     tampilkanstoknya()
     df = pd.read_csv('datastok.csv')
-    pilihan = input('Ada yang ingin dicari ketik 1(tekan 0 untuk kembali): ')
-    if pilihan == "1":
-        nama = input("Masukkan Nama Produk yang ingin dicari: ")
-        cari = pd.read_csv('datastok.csv')
-        cari_nama = nama
-        hasil = cari[cari['nama'].str.contains(cari_nama, na=False)]
-        hasil.index = range(1, len(hasil)+1)
-        print(hasil)
-    elif pilihan == "0":
-        cekstok()
+    while True:
+        pilihan = input('Ada yang ingin dicari ketik 1(tekan 0 untuk kembali): ')
+        if pilihan == "1":
+            nama = input("Masukkan Nama Produk yang ingin dicari: ")
+            cari = pd.read_csv('datastok.csv')
+            cari_nama = nama
+            hasil = cari[cari['nama'].str.contains(cari_nama, na=False)]
+            hasil.index = range(1, len(hasil)+1)
+            print(hasil)
+        elif pilihan == "0":
+            cekstok()
 
 if __name__ == "__main__":
     menu_regislogin()
-    # tes
+    
