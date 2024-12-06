@@ -10,7 +10,7 @@ from  prettytable import  PrettyTable
 def loading(text):
     for i in range(7):
         print("\r{0}  {1}".format(text,"."*i),end="")
-        time.sleep(0.5)
+        time.sleep(0.1)
 #DONE LOGIN
 def menu_regislogin():
     os.system('cls')
@@ -85,7 +85,7 @@ def menu_regislogin():
             os.system('cls')
             print("A. Registrasi")
             print("B. Login")
-            jawaban = str(input("Registrasi/Login[A/B] : "))
+            jawaban = str(input("Registrasi/Login[A/B] : ")).upper()
             if jawaban == "A" :
                 os.system('cls')
                 print("\n========================================")
@@ -264,7 +264,7 @@ def menu_admin():
             if row[4] < strTgl:
                 data_exp.append({
                     'nama': row[0],'jenisbarang': row[1],'harga': row[2],'stok': row[3], 
-                    'expireddate': row[4], 'expireddate': row[5]})
+                    'expireddate': row[4]})
                 data_exp.remove(data_exp[0])
                 dp = pd.DataFrame(data_exp)
                 dp.index = range(1, len(dp)+1)
@@ -334,7 +334,7 @@ def menu_customer():
         exit()
 
 
-def hapus_stok():
+def hapus_barang():
     stok = pd.read_csv('datastok.csv')
     nama_barang = input("Masukkan nama Barang yang mau dihapus")
     if nama_barang in stok['nama'].values:
@@ -347,7 +347,7 @@ def hapus_stok():
 def cekstok():
     while True:
         os.system('cls')
-        print("===Halo Pelanggan===")
+        print("===Halo Admin===")
         print("1. Lihat Stock")
         print("2. Beli Barang")
         print("3. Hapus Barang")
@@ -363,7 +363,7 @@ def cekstok():
             menu_admin()
 
 
-def restok():
+def beli_barang():
     while True:
         print('DATA STOK')
         try:
